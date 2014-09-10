@@ -5,8 +5,17 @@
     [clojure.set])
   (:refer-clojure :exclude [replace]))
 
-(defn ask-player-for-move []
-  (println "where would you like to move?"))
+(defn welcome-message []
+  (println "Welcome to Clojure Tic Tac Toe!!!"))
+
+(defn ask-for-mark [player-number]
+  (println "Please enter your game piece, player" player-number ":"))
+
+(defn ask-for-move []
+  (println "Where would you like to move?"))
+
+(defn lets-begin-message []
+  (println "Great.  Let's begin!!!"))
 
 (defn print-board [board]
     (prn (str "  " (board 0) "  |  " (board 1) "  |  " (board 2) "  "))
