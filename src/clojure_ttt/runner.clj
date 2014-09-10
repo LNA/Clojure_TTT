@@ -9,10 +9,6 @@
         starter-board (p/board)
         board (p/make-move-on starter-board move "X")]
     (prn "Your move was" move)
-    (prn (str "  " (board 0) "  |  " (board 1) "  |  " (board 2) "  "))
-    (prn "-----------------")
-    (prn (str "  " (board 3) "  |  " (board 4) "  |  " (board 5) "  "))
-    (prn "-----------------")
-    (prn (str "  " (board 6) "  |  " (board 7) "  |  " (board 8) "  "))))
+    (u/print-board board)))
 
  
