@@ -87,3 +87,6 @@
   (cond
     (and (= true (number? (board space))) (< space 9)) true 
     :else false))
+
+(defn switch-players [current-mark mark-1 mark-2]
+  (if (= mark-1 current-mark) mark-2 mark-1))

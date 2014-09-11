@@ -153,3 +153,11 @@
     (let [board ["O" 2 "X" "X" "X" "O" "O" "O" "X"]]
       (should= false 
         (valid-move? board 4)))))
+
+(describe "switch-players"
+  (it "gives the next player mark"
+    (let [player-one-mark "X"
+          player-two-mark "O"
+          current-mark "X"]
+      (should= "O"
+        (switch-players current-mark player-one-mark player-two-mark)))))
