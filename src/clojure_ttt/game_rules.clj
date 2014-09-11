@@ -73,6 +73,16 @@
   (let [checked-spaces (find-open-spaces board)]
     (every? false? checked-spaces)))
 
-;tiev
+(defn tie? [board mark-1 mark-2]
+  (cond
+    (and (= false (winner? board mark-1)) (= false (winner? board mark-2)) (= true (full-board? board))) true
+    :else false))
+
+(defn game-over? [board mark-1 mark-2]
+  (cond 
+    (or (= true (tie? board mark-1 mark-2)) (= true (full-board? board))) true
+    :else false))
+
+
 ;game over
 

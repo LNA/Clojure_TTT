@@ -95,12 +95,12 @@
 
 (describe "find-open-spaces"
   (it "returns true for an open space"
-  (let [board (vec (range 2))]
+    (let [board (vec (range 2))]
       (should= [true true]
        (find-open-spaces board))))
 
   (it "returns false for a closed space"
-  (let [board ["X" 2]]
+    (let [board ["X" 2]]
       (should= [false true]
        (find-open-spaces board))))
   )
@@ -115,3 +115,30 @@
     (let [board (vec (range 9))]
       (should= false
        (full-board? board)))))
+
+(describe "tie?" 
+  (it "gives true for a tie"
+    (let [board ["O" "X" "X" "X" "X" "O" "O" "O" "X"]]
+      (should= true 
+        (tie? board "X" "O"))))
+
+  (it "gives false for a non tie"
+    (let [board (vec (range 9))]
+      (should= false 
+        (tie? board "X" "O")))))
+
+(describe "game-over?"
+  (it "gives true if there is a tie"
+    (let [board ["O" "X" "X" "X" "X" "O" "O" "O" "X"]]
+      (should= true 
+        (game-over? board "X" "O")))
+
+    (it "gives true if there is winner"
+      (let [board ["X" "X" "X" "X" "X" "O" "O" "O" "X"]]
+      (should= true 
+        (game-over? board "X" "O"))))
+
+    (it "gives false if the game is in progress"
+      (let [board (vec (range 9))]
+      (should= true 
+        (game-over? board "X" "O"))))))
