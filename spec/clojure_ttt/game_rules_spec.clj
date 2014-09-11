@@ -135,10 +135,21 @@
 
     (it "gives true if there is winner"
       (let [board ["X" "X" "X" "X" "X" "O" "O" "O" "X"]]
-      (should= true 
-        (game-over? board "X" "O"))))
+        (should= true 
+          (game-over? board "X" "O"))))
 
     (it "gives false if the game is in progress"
       (let [board (vec (range 9))]
+        (should= true 
+          (game-over? board "X" "O"))))))
+
+(describe "valid-move?"
+  (it "returns true if a move is valid"
+    (let [board (vec (range 9))]
       (should= true 
-        (game-over? board "X" "O"))))))
+        (valid-move? board 4))))
+
+  (it "returns false if a space is taken"
+    (let [board ["O" 2 "X" "X" "X" "O" "O" "O" "X"]]
+      (should= false 
+        (valid-move? board 4)))))
