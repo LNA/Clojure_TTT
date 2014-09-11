@@ -24,17 +24,17 @@
 (defn column-one-win? [board mark]
   (cond
     (and (= mark (board 0)) (= mark (board 3)) (= mark (board 6))) true
-       :else false))
+    :else false))
 
 (defn column-two-win? [board mark]
   (cond
     (and (= mark (board 1)) (= mark (board 4)) (= mark (board 7))) true
-       :else false))
+    :else false))
 
 (defn column-three-win? [board mark]
   (cond
     (and (= mark (board 2)) (= mark (board 5)) (= mark (board 8))) true
-       :else false))
+    :else false))
 
 (defn column-win? [board mark]
   (cond
@@ -46,12 +46,12 @@
 (defn left-diag-win? [board mark]
   (cond
     (and (= mark (board 0)) (= mark (board 4)) (= mark (board 8))) true
-       :else false))
+    :else false))
 
 (defn right-diag-win? [board mark]
   (cond
     (and (= mark (board 2)) (= mark (board 4)) (= mark (board 6))) true
-       :else false))
+    :else false))
 
 (defn diag-win? [board mark]
   (cond
@@ -65,3 +65,14 @@
     (column-win? board mark) true
     (diag-win? board mark) true
     :else false))
+
+(defn find-open-spaces [board]
+  (map (fn [x] (number? x)) board))
+
+(defn full-board? [board]
+  (let [checked-spaces (find-open-spaces board)]
+    (every? false? checked-spaces)))
+
+;tiev
+;game over
+
