@@ -8,5 +8,5 @@
 (describe "make-move-on"
           (it "makes a move on the board"
               (let [board [0 1 2 3 4 5 6 7 8]]
-              (should= ["X" 1 2 3 4 5 6 7 8]
-                       (make-move-on board 0 "X")))))
+                (should= ["X" 1 2 3 4 5 6 7 8]
+                         (make-move-on board 0 "X")))))

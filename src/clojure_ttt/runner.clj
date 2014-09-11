@@ -15,14 +15,19 @@
   (let [move (Integer. (read-line))
         starter-board (p/board)
         mark player-one-mark
-        board (p/make-move-on starter-board move mark)] ; remove hard coded value
+        board (p/make-move-on starter-board move mark)] 
     (prn "Your move was" move)
     (u/print-board board)
     (u/ask-for-move)
     (let [move (Integer. (read-line))
-          mark player-two-mark
+          mark player-one-mark
+          board (p/make-move-on board move mark)]
+    (prn "Your move was" move)
+    (u/print-board board)
+    (u/ask-for-move)
+    (let [move (Integer. (read-line))
+          mark player-one-mark
           board (p/make-move-on board move mark)]
     (prn "Your move was" move)
     (u/print-board board)))
-    (u/ask-for-move))))
-
+    (u/ask-for-move)))))
