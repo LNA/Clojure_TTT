@@ -53,7 +53,31 @@
               (let [board [0 1 "X" 3 4 "X" 6 7 "X"]]
                 (should= true
                          (column-win board "X"))))
+
           (it "gives false for a non win"
             (let [board (vec (range 9))]
               (should= false
                        (column-win board "X")))))
+
+(describe "left-diag-win"
+          (it "gives true for a 0 4 8 win"
+              (let [board ["X" 1 2 3 "X" 5 6 7 "X"]]
+                (should= true
+                         (left-diag-win board "X")))))
+
+(describe "right-diag-win"
+          (it "gives true for a 2 4 6 win"
+              (let [board [0 1 "X" 3 "X" 5 "X" 7 8]]
+                (should= true
+                         (right-diag-win board "X")))))
+
+(describe "diag-win"
+          (it "gives true for a 2 4 6 win"
+              (let [board [0 1 "X" 3 "X" 5 "X" 7 8]]
+                (should= true
+                         (diag-win board "X"))))
+
+          (it "gives false for a non win"
+            (let [board (vec (range 9))]
+              (should= false
+                       (diag-win board "X")))))

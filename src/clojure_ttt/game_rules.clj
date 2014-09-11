@@ -42,3 +42,19 @@
     (column-two-win board mark) true
     (column-three-win board mark) true
     :else false))
+
+(defn left-diag-win [board mark]
+  (cond
+    (and (= mark (board 0)) (= mark (board 4)) (= mark (board 8))) true
+       :else false))
+
+(defn right-diag-win [board mark]
+  (cond
+    (and (= mark (board 2)) (= mark (board 4)) (= mark (board 6))) true
+       :else false))
+
+(defn diag-win [board mark]
+  (cond
+    (left-diag-win board mark) true
+    (right-diag-win board mark) true
+    :else false))
