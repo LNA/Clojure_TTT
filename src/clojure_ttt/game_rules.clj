@@ -20,3 +20,25 @@
     (row-two-win board mark) true
     (row-three-win board mark) true
     :else false))
+
+(defn column-one-win [board mark]
+  (cond
+    (and (= mark (board 0)) (= mark (board 3)) (= mark (board 6))) true
+       :else false))
+
+(defn column-two-win [board mark]
+  (cond
+    (and (= mark (board 1)) (= mark (board 4)) (= mark (board 7))) true
+       :else false))
+
+(defn column-three-win [board mark]
+  (cond
+    (and (= mark (board 2)) (= mark (board 5)) (= mark (board 8))) true
+       :else false))
+
+(defn column-win [board mark]
+  (cond
+    (column-two-win board mark) true
+    (column-two-win board mark) true
+    (column-three-win board mark) true
+    :else false))

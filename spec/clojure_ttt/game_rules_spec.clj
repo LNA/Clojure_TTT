@@ -29,3 +29,31 @@
             (let [board (vec (range 9))]
               (should= false
                        (row-win board "X")))))
+
+(describe "column-one-win"
+          (it "gives true for a 0 3 6 win"
+              (let [board ["X" 1 2 "X" 4 5 "X" 7 8]]
+                (should= true
+                         (column-one-win board "X")))))
+
+(describe "column-two-win"
+          (it "gives true for a 1 4 7 win"
+              (let [board [0 "X" 2  3 "X" 5 6 "X" 8]]
+                (should= true
+                         (column-two-win board "X")))))
+
+(describe "column-three-win"
+          (it "gives true for a 2 5 8 win"
+              (let [board [0 1 "X" 3 4 "X" 6 7 "X"]]
+                (should= true
+                         (column-three-win board "X")))))
+
+(describe "column-win"
+          (it "gives true for a 2 5 8 win"
+              (let [board [0 1 "X" 3 4 "X" 6 7 "X"]]
+                (should= true
+                         (column-win board "X"))))
+          (it "gives false for a non win"
+            (let [board (vec (range 9))]
+              (should= false
+                       (column-win board "X")))))
