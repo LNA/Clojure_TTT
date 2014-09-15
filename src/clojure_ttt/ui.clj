@@ -18,8 +18,10 @@
   (println "Great.  Let's begin!!!"))
 
 (defn print-board [board]
+    (prn "                 ")
     (prn (str "  " (board 0) "  |  " (board 1) "  |  " (board 2) "  "))
     (prn "-----------------")
     (prn (str "  " (board 3) "  |  " (board 4) "  |  " (board 5) "  "))
     (prn "-----------------")
-    (prn (str "  " (board 6) "  |  " (board 7) "  |  " (board 8) "  ")))
+    (prn (str "  " (board 6) "  |  " (board 7) "  |  " (board 8) "  "))
+    (prn "                 "))

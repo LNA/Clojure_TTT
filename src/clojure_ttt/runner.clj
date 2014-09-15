@@ -11,19 +11,20 @@
     (u/ask-for-mark "two")
     (let [player-two-mark (read-line)
           board (vec (range 9))]
-      (u/lets-begin-message)
 
-      (while (= false (r/game-over? board player-one-mark player-two-mark)
-        (u/print-board board))
+      (def current-mark (ref player-one-mark))
+      ; (def board (ref (vec (range 9))))
+
+      (u/lets-begin-message)
+      (u/print-board board)
+      (def current-mark (ref player-one-mark))
+
+      (while (not (r/game-over? board player-one-mark player-two-mark))
         (u/ask-for-move)
         (let [move (Integer. (read-line))
-          starter-board (p/board)
-          mark player-one-mark
-          board (p/make-move-on starter-board move mark)] 
+          board (p/make-move-on board move @current-mark)] 
+          (prn board)
           (prn "Your move was" move)
+          (prn board)
+          (def current-mark (ref (r/switch-players @current-mark player-one-mark player-two-mark)))
           (u/print-board board))))))
-
-      ; display_board
-      ; make_move(settings, current_player, current_mark)
-      ; current_player = next_player(current_player, settings)
-      ; current_mark   = next_mark(current_mark, settings)
