@@ -109,32 +109,21 @@
       (should= false
        (full-board? board)))))
 
-(describe "tie?" 
-  (it "gives true for a tie"
-    (let [board ["O" "X" "X" "X" "X" "O" "O" "O" "X"]]
-      (should= true 
-        (tie? board "X" "O"))))
-
-  (it "gives false for a non tie"
-    (let [board (vec (range 9))]
-      (should= false 
-        (tie? board "X" "O")))))
-
 (describe "game-over?"
   (it "gives true if there is a tie"
     (let [board ["O" "X" "X" "X" "X" "O" "O" "O" "X"]]
       (should= true 
-        (game-over? board "X" "O")))
+        (game-over? board "X"))))
 
     (it "gives true if there is winner"
-      (let [board ["X" "X" "X" "X" "X" "O" "O" "O" "X"]]
+      (let [board ["X" "O" 2 "X" "X" "O" "X" "O" "O"]]
         (should= true 
-          (game-over? board "X" "O"))))
+          (game-over? board "X"))))
 
     (it "gives false if the game is in progress"
       (let [board (vec (range 9))]
-        (should= true 
-          (game-over? board "X" "O"))))))
+        (should= false 
+          (game-over? board "X")))))
 
 (describe "valid-move?"
   (it "returns true if a move is valid"

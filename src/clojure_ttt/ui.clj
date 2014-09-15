@@ -25,3 +25,9 @@
     (prn "-----------------")
     (prn (str "  " (board 6) "  |  " (board 7) "  |  " (board 8) "  "))
     (prn "                 "))
+
+(defn invalid-move-message []
+  (println "Invalid move.  Try again!"))
+
+(defn game-over-message [mark]
+  (println "Game over... " mark "has won!"))
