@@ -15,11 +15,7 @@
   (every? #{mark} (subvec board 6 9)))
 
 (defn row-win? [board mark]
-  (cond
-    (row-one-win? board mark) true
-    (row-two-win? board mark) true
-    (row-three-win? board mark) true
-    :else false))
+  (some  #(% board mark) [row-one-win? row-two-win? row-three-win?]))
 
 (defn column-one-win? [board mark]
   (cond
@@ -37,11 +33,7 @@
     :else false))
 
 (defn column-win? [board mark]
-  (cond
-    (column-two-win? board mark) true
-    (column-two-win? board mark) true
-    (column-three-win? board mark) true
-    :else false))
+  (some  #(% board mark) [column-one-win? column-two-win? column-three-win?]))
 
 (defn left-diag-win? [board mark]
   (cond
@@ -54,17 +46,11 @@
     :else false))
 
 (defn diag-win? [board mark]
-  (cond
-    (left-diag-win? board mark) true
-    (right-diag-win? board mark) true
-    :else false))
+  (some  #(% board mark) [left-diag-win? right-diag-win?]))
 
 (defn winner? [board mark]
-  (cond
-    (row-win? board mark) true
-    (column-win? board mark) true
-    (diag-win? board mark) true
-    :else false))
+  (some  #(% board mark) [row-win? column-win? diag-win?]))
+
 
 (defn find-open-spaces [board]
   (map (fn [x] (number? x)) board))
@@ -75,7 +61,7 @@
 
 (defn tie? [board mark-1 mark-2]
   (cond
-    (and (= false (winner? board mark-1)) (= false (winner? board mark-2)) (= true (full-board? board))) true
+    (and (= nil (winner? board mark-1)) (= nil (winner? board mark-2)) (= true (full-board? board))) true
     :else false))
 
 (defn game-over? [board mark-1 mark-2]

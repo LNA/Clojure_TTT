@@ -25,9 +25,10 @@
     (let [board [0 1 2 3 4 5 "X" "X" "X"]]
       (should= true
        (row-win? board "X"))))
-  (it "gives false for a non win"
+
+  (it "gives nil for a non win"
     (let [board (vec (range 9))]
-      (should= false
+      (should= nil
        (row-win? board "X")))))
 
 (describe "column-one-win?"
@@ -56,7 +57,7 @@
 
   (it "gives false for a non win"
     (let [board (vec (range 9))]
-      (should= false
+      (should= nil
        (column-win? board "X")))))
 
 (describe "left-diag-win?"
@@ -79,7 +80,7 @@
 
   (it "gives false for a non win"
     (let [board (vec (range 9))]
-      (should= false
+      (should= nil
        (diag-win? board "X")))))
 
 (describe "winner?"
@@ -88,9 +89,9 @@
       (should= true
        (winner? board "X"))))
 
-  (it "gives false for a non win"
+  (it "gives nil for a non win"
     (let [board (vec (range 9))]
-      (should= false
+      (should= nil
        (winner? board "X")))))
 
 (describe "find-open-spaces"
