@@ -1,8 +1,7 @@
 (ns clojure_ttt.ui
   (:require
     [clojure.string :refer [replace]]
-    [clojure.java.io :as io]
-    [clojure.set])
+    [clojure_ttt.game_rules    :as r])
   (:refer-clojure :exclude [replace]))
 
 (defn welcome-message []
@@ -11,8 +10,8 @@
 (defn ask-for-mark [player-number]
   (println "Please enter your game piece, player" player-number ":"))
 
-(defn ask-for-move []
-  (println "Where would you like to move?"))
+(defn ask-for-move [mark]
+  (println "Where would you like to move," mark " ?"))
 
 (defn lets-begin-message []
   (println "Great.  Let's begin!!!"))
@@ -29,5 +28,7 @@
 (defn invalid-move-message []
   (println "Invalid move.  Try again!"))
 
-(defn game-over-message [mark]
-  (println "Game over... " mark "has won!"))
+(defn game-over-message [mark board]
+  (if (= true (r/winner? board mark)) 
+    (println "Game over... " mark "has won!") 
+    (println "Its a tie!")))

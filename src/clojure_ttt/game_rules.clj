@@ -1,8 +1,6 @@
 (ns clojure_ttt.game_rules
   (:require
-    [clojure.string :refer [replace]]
-    [clojure.java.io :as io]
-    [clojure.set])
+    [clojure.string :refer [replace]])
   (:refer-clojure :exclude [replace]))
 
 (defn row-one-win? [board mark]
@@ -54,13 +52,13 @@
 (defn find-open-spaces [board]
   (map (fn [x] (number? x)) board))
 
-(defn full-board? [board]
+(defn tie? [board]
   (let [checked-spaces (find-open-spaces board)]
     (every? false? checked-spaces)))
 
 (defn game-over? [board mark]
   (cond 
-    (or (= true (winner? board mark)) (= true (full-board? board))) true
+    (or (= true (winner? board mark)) (= true (tie? board))) true
     :else false))
 
 (defn valid-move? [board move]

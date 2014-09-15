@@ -18,11 +18,11 @@
       (u/print-board @board)
 
       (while (not (r/game-over? @board @current-mark))
-        (u/ask-for-move)
+        (u/ask-for-move @current-mark)
         (let [move (Integer. (read-line))]
           (if (= true (r/valid-move? board move))
           (def board (ref (p/make-move-on @board move @current-mark)))
           (u/invalid-move-message))
           (u/print-board @board)
           (def current-mark (ref (r/switch-players @current-mark player-one-mark player-two-mark)))))
-          (u/game-over-message @current-mark))))
+          (u/game-over-message @current-mark @board))))

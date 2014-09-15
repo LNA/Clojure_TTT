@@ -98,16 +98,16 @@
        (find-open-spaces board))))
   )
 
-(describe "full-board?"
+(describe "tie?"
   (it "gives true for a full board"
     (let [board ["V" "V" "X" "V" "X" "V" "X" "V" "V"]]
       (should= true
-       (full-board? board))))
+       (tie? board))))
   
   (it "gives false for a non full board"
     (let [board (vec (range 9))]
       (should= false
-       (full-board? board)))))
+       (tie? board)))))
 
 (describe "game-over?"
   (it "gives true if there is a tie"
