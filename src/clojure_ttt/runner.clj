@@ -1,6 +1,7 @@
 (ns clojure_ttt.runner
-  (:require [clojure_ttt.board :as p]
-            [clojure_ttt.ui    :as u])
+  (:require [clojure_ttt.board         :as p]
+            [clojure_ttt.ui            :as u]
+            [clojure_ttt.game_rules    :as r])
   (:gen-class :main true))
 
 (defn -main []
@@ -9,25 +10,19 @@
   (let [player-one-mark (read-line)]
     (u/ask-for-mark "two")
     (let [player-two-mark (read-line)]
-  (u/lets-begin-message)
-  (u/print-board (vec (range 9)))
-  (u/ask-for-move)
-  (let [move (Integer. (read-line))
-        starter-board (p/board)
-        mark player-one-mark
-        board (p/make-move-on starter-board move mark)] 
-    (prn "Your move was" move)
-    (u/print-board board)
-    (u/ask-for-move)
-    (let [move (Integer. (read-line))
-          mark player-one-mark
-          board (p/make-move-on board move mark)]
-    (prn "Your move was" move)
-    (u/print-board board)
-    (u/ask-for-move)
-    (let [move (Integer. (read-line))
-          mark player-one-mark
-          board (p/make-move-on board move mark)]
-    (prn "Your move was" move)
-    (u/print-board board)))
-    (u/ask-for-move)))))
+
+      (def current-mark (ref player-one-mark))
+      (def board (ref (vec (range 9))))
+
+      (u/lets-begin-message)
+      (u/print-board @board)
+
+      (while (not (r/game-over? @board @current-mark))
+        (u/ask-for-move)
+        (let [move (Integer. (read-line))]
+          (if (= true (r/valid-move? board move))
+          (def board (ref (p/make-move-on @board move @current-mark)))
+          (u/invalid-move-message))
+          (u/print-board @board)
+          (def current-mark (ref (r/switch-players @current-mark player-one-mark player-two-mark)))))
+          (u/game-over-message @current-mark))))
