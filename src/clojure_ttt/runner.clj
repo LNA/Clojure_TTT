@@ -20,23 +20,25 @@
 (defn set-game-properties [] 
   (set-player-one)
   (set-player-two)
-  (def current-mark (ref @player-one-mark))
-  (def board (ref (vec (range 9)))))
+  (def current-mark (ref @player-one-mark)))
 
   (defn setup-game []
     (u/welcome-message)
     (set-game-properties)
     (u/lets-begin-message)
-    (u/print-board @board))
+    (u/print-board (vec (range 9))))
 
   (defn -main []
    (setup-game)
-   (while (not (r/game-over? @board @current-mark))
-    (u/ask-for-move @current-mark)
-    (let [move (Integer. (read-line))]
-      (if (= true (r/valid-move? board move))
-        (def board (ref (p/make-move-on @board move @current-mark)))
-        (u/invalid-move-message))
-      (u/print-board @board)
-      (def current-mark (ref (r/switch-players @current-mark @player-one-mark @player-two-mark)))))
-   (u/game-over-message @current-mark @board))
+   (loop [current-mark @player-one-mark
+          player-one-mark @player-one-mark
+          player-two-mark @player-two-mark
+          board       (vec (range 9))]
+    (if (r/game-over? board current-mark) (u/game-over-message current-mark board)
+      (do (u/ask-for-move current-mark)
+        (let [move (Integer. (read-line))]
+          (if (r/invalid-move? board move) 
+            (u/invalid-move-message)
+            (do (let [updated-board (p/make-move-on board move current-mark)] 
+              (u/print-board updated-board)
+              (recur (r/switch-players current-mark player-one-mark player-two-mark) player-two-mark player-one-mark updated-board)))))))))
