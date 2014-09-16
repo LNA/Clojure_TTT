@@ -61,10 +61,13 @@
     (or (= true (winner? board mark)) (= true (tie? board))) true
     :else false))
 
-(defn valid-move? [board move]
+(defn invalid-move? [board move]
   (cond
-    (and (= true (number? (board move))) (< move 9)) true 
-    :else false))
+    (and (= true (number? (board move))) (< move 9)) false 
+    :else true))
 
 (defn switch-players [current-mark mark-1 mark-2]
    (if (= mark-1 current-mark) mark-2 mark-1))
+
+(defn game-in-progress? [board mark]
+  (not (game-over? board mark)))
