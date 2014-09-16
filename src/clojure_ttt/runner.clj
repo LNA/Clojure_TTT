@@ -5,35 +5,10 @@
     [clojure_ttt.ai            :as a])
   (:gen-class :main true))
 
-(defn set-player-one []
-  (u/ask-for-mark "one")
-  (def player-one-mark (ref (read-line)))
-  (u/ask-for-player-type "one")
-  (def player-one-type (ref (read-line))))
-
-(defn set-player-two []
-  (u/ask-for-mark "two")
-  (def player-two-mark (ref (read-line)))
-  (u/ask-for-player-type "two")
-  (def player-two-type (ref (read-line))))
-
-(defn set-game-properties [] 
-  (set-player-one)
-  (set-player-two)
-  (def current-mark (ref @player-one-mark)))
-
-  (defn setup-game []
-    (u/welcome-message)
-    (set-game-properties)
-    (u/lets-begin-message)
-    (u/print-board (vec (range 9))))
-
-  (defn -main []
-   (setup-game)
-   (loop [current-mark @player-one-mark
-          player-one-mark @player-one-mark
-          player-two-mark @player-two-mark
-          board       (vec (range 9))]
+  (defn game-loop [current-mark next-mark board]
+    (loop [current-mark current-mark
+          next-mark     next-mark
+          board         board]
     (if (r/game-over? board current-mark) (u/game-over-message current-mark board)
       (do (u/ask-for-move current-mark)
         (let [move (Integer. (read-line))]
@@ -41,4 +16,15 @@
             (u/invalid-move-message)
             (do (let [updated-board (p/make-move-on board move current-mark)] 
               (u/print-board updated-board)
-              (recur (r/switch-players current-mark player-one-mark player-two-mark) player-two-mark player-one-mark updated-board)))))))))
+              (recur next-mark current-mark updated-board)))))))))
+
+  (defn -main []
+    (u/welcome-message)
+    (u/ask-for-mark "one")
+    (let [ current-mark read-line]
+      (u/ask-for-mark "two")
+      (let [ next-mark read-line
+             board     (vec (range 9))]
+          (u/lets-begin-message)
+          (u/print-board board)
+   (game-loop current-mark next-mark board))))
