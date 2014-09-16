@@ -7,7 +7,7 @@
 (defn welcome-message []
   (println "Welcome to Clojure Tic Tac Toe!!!"))
 
-(defn ask-for-player-type [player-number]
+(defn ask-for-type [player-number]
   (println "Please type a for ai or h for human, player " player-number ))
 
 (defn ask-for-mark [player-number]
