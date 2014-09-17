@@ -123,17 +123,7 @@
     (it "gives false if the game is in progress"
       (let [board (vec (range 9))]
         (should= false 
-          (game-over? board "X"))))
-
-    (it "gives true for game-in-progress"
-      (let [board (vec (range 9))]
-        (should= true
-          (game-in-progress? board "X"))))
-
-    (it "gives false for a game over"
-      (let [board ["O" "X" "X" "X" "X" "O" "O" "O" "X"]]
-        (should= false 
-          (game-in-progress? board "X")))))
+          (game-over? board "X")))))
 
 (describe "invalid-move?"
   (it "returns false if a move is valid"
@@ -145,11 +135,3 @@
     (let [board ["O" 2 "X" "X" "X" "O" "O" "O" "X"]]
       (should= true 
         (invalid-move? board 4)))))
-
-(describe "switch-players"
-  (it "gives the next player mark"
-    (let [player-one-mark "X"
-          player-two-mark "O"
-          current-mark "X"]
-      (should= "O"
-        (switch-players current-mark player-one-mark player-two-mark)))))
