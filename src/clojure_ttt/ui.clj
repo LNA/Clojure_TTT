@@ -19,6 +19,9 @@
 (defn lets-begin-message []
   (println "Great.  Let's begin!!!"))
 
+(defn ai-move-message []
+  (println "I'm thinking..."))
+
 (defn print-board [board]
     (prn "                 ")
     (prn (str "  " (board 0) "  |  " (board 1) "  |  " (board 2) "  "))

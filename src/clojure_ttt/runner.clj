@@ -12,13 +12,17 @@
           next-type next-type
           board         board]
     (if (r/game-over? board current-mark) (u/game-over-message current-mark board)
-      (do (u/ask-for-move current-mark)
-        (let [move (Integer. (read-line))]
-          (if (r/invalid-move? board move) 
-            (u/invalid-move-message)
-            (do (let [updated-board (p/make-move-on board move current-mark)] 
-              (u/print-board updated-board)
-              (recur next-mark current-mark next-type current-type updated-board)))))))))
+      (do (cond
+       (= current-type "h")
+        ((u/ask-for-move current-mark)
+        (let [move (Integer. (read-line))
+              updated-board (p/make-move-on board move current-mark)]
+              (u/print-board updated-board)))
+              :else (let [move (a/ai-move board) 
+                          updated-board (p/make-move-on board move current-mark)]
+                (u/ai-move-message)
+                (u/print-board updated-board)
+              (recur next-mark current-mark next-type current-type updated-board)))))))
 
   (defn -main []
     (u/welcome-message)
