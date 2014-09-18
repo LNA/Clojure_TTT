@@ -61,7 +61,8 @@
     (or (= true (winner? board mark)) (= true (tie? board))) true
     :else false))
 
-(defn invalid-move? [board move]
-  (cond
-    (and (= true (number? (board move))) (< move 9)) false 
-    :else true))
+(defn in-bounds-move? [board move]
+    (<= move 8))
+
+(defn open-move? [board move]
+  (number? (board move)))

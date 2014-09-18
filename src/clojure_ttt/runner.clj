@@ -8,7 +8,7 @@
 (defn get-move [board current-type]
   (Integer. (if (= current-type "a")
     (a/ai-move board)
-    (read-line))))
+    (read-line)))) ; check if move in bounds
 
 (defn game-loop [current-mark next-mark current-type next-type board]
     (loop [current-mark current-mark
