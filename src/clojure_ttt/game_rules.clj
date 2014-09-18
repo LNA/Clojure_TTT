@@ -66,3 +66,9 @@
 
 (defn open-move? [board move]
   (number? (board move)))
+
+(defn valid-move? [board move]
+  (cond
+    (and (in-bounds-move? board move) (open-move? board move)) true
+  :else false))
+

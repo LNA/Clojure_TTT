@@ -8,7 +8,7 @@
 (defn get-move [board current-type]
   (Integer. (if (= current-type "a")
     (a/ai-move board)
-    (read-line)))) ; check if move in bounds
+    (read-line)))) 
 
 (defn game-loop [current-mark next-mark current-type next-type board]
     (loop [current-mark current-mark
@@ -19,10 +19,15 @@
     (if (r/game-over? board next-mark)
       (u/game-over-message next-mark board) 
       (do (u/ask-for-move current-mark)
-        (let [move (get-move board current-type)
-             updated-board (p/make-move-on board move current-mark)]
+        (let [move (get-move board current-type)]
+          (if (r/valid-move? board move)
+            (prn "Your move is" move)
+            (do (u/invalid-move-message) 
+              (let [updated-board board
+                    move (get-move board current-type)])))
+             (let [updated-board (p/make-move-on board move current-mark)]
           (u/print-board updated-board)
-          (recur next-mark current-mark next-type current-type updated-board))))))
+          (recur next-mark current-mark next-type current-type updated-board)))))))
 
 (defn start []
   (let [_ (u/ask-for-mark "one")

@@ -129,14 +129,14 @@
   (it "returns true if a move is out of bounds"
     (let [board (vec (range 9))]
       (should= false 
-        (in-bounds-move? board 20))))
+        (valid-move? board 20))))
 
   (it "returns true if a move is valid"
     (let [board ["O" 1 "X" "X" "X" "O" "O" "O" "X"]]
       (should= true 
-        (open-move? board 1))))
+        (valid-move? board 1))))
 
   (it "returns false if a space is taken"
     (let [board ["O" 1 "X" "X" "X" "O" "O" "O" "X"]]
       (should= false 
-        (open-move? board 4)))))
+        (valid-move? board 4)))))
