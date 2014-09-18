@@ -16,8 +16,8 @@
           current-type current-type
           next-type next-type
           board         board]
-    (if (r/game-over? board current-mark)
-      (u/game-over-message current-mark board)
+    (if (r/game-over? board next-mark)
+      (u/game-over-message next-mark board)
       (do (u/ask-for-move current-mark)
       (let [move (get-move board current-type)
            updated-board (p/make-move-on board move current-mark)]
