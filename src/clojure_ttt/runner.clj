@@ -5,10 +5,22 @@
     [clojure_ttt.ai            :as a])
   (:gen-class :main true))
 
-(defn get-move [board current-type]
-  (Integer. (if (= current-type "a")
+
+(defn get-human-move [board current-mark]
+  (u/ask-for-move current-mark)
+  (let [move (Integer. (read-line))]
+    (println "Your move is" move ".")
+    (if (r/valid-move? board move)
+      move
+      (do
+      (u/invalid-move-message)
+      (let [move (get-human-move board current-mark)]
+        move)))))
+
+(defn get-move [board current-type current-mark]
+  (if (= current-type "a")
     (a/ai-move board)
-    (read-line)))) 
+    (get-human-move board current-mark))) 
 
 (defn game-loop [current-mark next-mark current-type next-type board]
     (loop [current-mark current-mark
@@ -18,13 +30,8 @@
           board         board]
     (if (r/game-over? board next-mark)
       (u/game-over-message next-mark board) 
-      (do (u/ask-for-move current-mark)
-        (let [move (get-move board current-type)]
-          (if (r/valid-move? board move)
-            (prn "Your move is" move)
-            (do (u/invalid-move-message) 
-              (let [updated-board board
-                    move (get-move board current-type)])))
+      (do 
+        (let [move (get-move board current-type current-mark)] 
              (let [updated-board (p/make-move-on board move current-mark)]
           (u/print-board updated-board)
           (recur next-mark current-mark next-type current-type updated-board)))))))
