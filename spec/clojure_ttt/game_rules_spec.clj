@@ -70,6 +70,13 @@
       (should= true
        (diag-win? board "X"))))
 
+  (it "gives true for a 0 4 8"
+    (let [board ["O" "X" "O" 
+                "O" "O" "X" 
+                "X" "O" "O"]]
+      (should= true
+       (diag-win? board "O"))))
+
   (it "gives false for a non win"
     (let [board (vec (range 9))]
       (should= nil
@@ -95,35 +102,43 @@
   (it "returns false for a closed space"
     (let [board ["X" 2]]
       (should= [false true]
-       (find-open-spaces board))))
-  )
+       (find-open-spaces board)))))
 
 (describe "tie?"
-  (it "gives true for a full board"
-    (let [board ["V" "V" "X" "V" "X" "V" "X" "V" "V"]]
+  (it "gives true for a board with no numbers"
+    (let [board ["X" "X" "O" "O" "O" "X" "X" "O" "O"]]
       (should= true
-       (tie? board))))
+       (tie? board "O""X"))))
   
   (it "gives false for a non full board"
     (let [board (vec (range 9))]
       (should= false
-       (tie? board)))))
+       (tie? board "O""X"))))
+
+  (it "gives false for a win" 
+    (let [board ["O" "X" "O" 
+                 "O" "O" "X" 
+                 "X" "O" "O"]]
+      (should= false
+        (tie? board "X" "O")))))
 
 (describe "game-over?"
   (it "gives true if there is a tie"
-    (let [board ["O" "X" "X" "X" "X" "O" "O" "O" "X"]]
+    (let [board ["O" "X" "X" 
+                 "X" "X" "O" 
+                 "O" "O" "X"]]
       (should= true 
-        (game-over? board "X"))))
+        (game-over? board "X" "O"))))
 
     (it "gives true if there is winner"
       (let [board ["X" "O" 2 "X" "X" "O" "X" "O" "O"]]
         (should= true 
-          (game-over? board "X"))))
+          (game-over? board "X" "O"))))
 
     (it "gives false if the game is in progress"
       (let [board (vec (range 9))]
         (should= false 
-          (game-over? board "X")))))
+          (game-over? board "X" "O")))))
 
 (describe "valid move"
   (it "returns true if a move is out of bounds"

@@ -52,13 +52,16 @@
 (defn find-open-spaces [board]
   (map (fn [x] (number? x)) board))
 
-(defn tie? [board]
-  (let [checked-spaces (find-open-spaces board)]
-    (every? false? checked-spaces)))
+(defn tie? [board mark-1 mark-2]
+  (let [checked-spaces (find-open-spaces board)
+        board           board]
+    (cond
+      (and (every? false? checked-spaces) (not (winner? board mark-1)) (not (winner? board mark-2))) true
+      :else false))) ;none of them are numbers
 
-(defn game-over? [board mark]
+(defn game-over? [board mark-1 mark-2]
   (cond 
-    (or (= true (winner? board mark)) (= true (tie? board))) true
+    (or (= true (winner? board mark-1)) (= true (tie? board mark-1 mark-2))) true
     :else false))
 
 (defn in-bounds-move? [board move]
@@ -71,4 +74,3 @@
   (cond
     (and (in-bounds-move? board move) (open-move? board move)) true
   :else false))
-
