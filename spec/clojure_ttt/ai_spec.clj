@@ -26,24 +26,31 @@
       (should= 0
         (move-on-open-space space ["X" "X" "O" "O" "O" "X" "X" "O" "O"] mark opponent depth))))
 
-  (it "ranks through ai-move"
+  (it "ranks through rank-open-spaces" ;rank open spaces
     (let [mark "X"
           opponent "O"]
       (should= [500 -500 -500 -500 -500 -500 -500]
-        (ai-move [0 "X" "X" 3 4 5 6 7 8] mark opponent))
+        (rank-open-spaces [0 "X" "X" 3 4 5 6 7 8] mark opponent))
       (should= [-500 -500 -500 -500 -500 -500 -500]
-        (ai-move [0 "X" "X" 3 4 5 6 7 8] opponent mark ))
+        (rank-open-spaces [0 "X" "X" 3 4 5 6 7 8] opponent mark ))
       (should= []
-        (ai-move ["X" "X" "O" "O" "O" "X" "X" "O" "O"] mark opponent))))
+        (rank-open-spaces ["X" "X" "O" "O" "O" "X" "X" "O" "O"] mark opponent))))
                
   (it "gives the open spaces" 
     (let [board [0 "X" "X" "O" "O" "X" "X" 7 8]]
       (should= [0 7 8]
         (open-spaces board))))
 
-  (it "gives a hash map of open spaces and their rankings"
+  (it "gives a hash map of open ranked spaces without multiple rankings"
     (let [board [0  "X" "X" "O" "O" "X" "X"  7  8]
           max-mark "X"
           min-mark "O" ]
-      (should= {8 500 7 -500 0 500}
-        (build-rankings board max-mark min-mark)))))
+      (should= {-500 7, 500 8}
+        (build-rankings board max-mark min-mark))))
+
+  (it "gives the best move"
+    (let [board [0  "X" "X" "O" "O" "X" "X" 7 8]
+          max-mark "X"
+          min-mark "O" ]
+      (should= 8
+        (find-best-ranked-move board max-mark min-mark)))))

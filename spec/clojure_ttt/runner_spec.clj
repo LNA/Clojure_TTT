@@ -11,7 +11,7 @@
 
 (describe "Runer" 
   
-  (xit "gets a move"
+  (it "gets a move"
     (let [board (vec (range 9))
           current-type  "h"
           next-type     "a"
@@ -20,10 +20,10 @@
     (with-redefs [read-line (constantly "1")]
         (should= 1
           (get-move board current-type current-mark next-mark)))
-        (should= 0
+        (should= 8
           (get-move board next-type current-mark next-mark))))
 
-  (xit "hits the game over message in the game loop"
+  (it "hits the game over message in the game loop"
     (let [board         (vec (range 9))
           game-over-message "game over message"]
           (with-in-str (mock-human-input [0 3 6])
