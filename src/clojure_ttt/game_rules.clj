@@ -57,7 +57,7 @@
         board           board]
     (cond
       (and (every? false? checked-spaces) (not (winner? board mark-1)) (not (winner? board mark-2))) true
-      :else false))) ;none of them are numbers
+      :else false))) 
 
 (defn game-over? [board mark-1 mark-2]
   (cond 
