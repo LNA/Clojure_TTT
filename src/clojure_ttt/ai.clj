@@ -10,10 +10,9 @@
 
 (defn rank [board mark opponent]
   (cond
+    (r/game-in-progress? board mark opponent) 100
     (r/tie? board mark opponent) 0
-    (r/winner? board mark)       500
-    (r/winner? board opponent)  -500)
-    (r/game-in-progress? board mark opponent) 100)
+    (r/winner? board mark)       500))
 
 
 (defn track-moves [space max-rank min-rank]
@@ -32,8 +31,7 @@
   (let [depth 0
         max-rank (rank (b/make-move-on board space mark) mark opponent)
         min-rank (rank (b/make-move-on board space opponent) opponent mark)]
-        (prn max-rank board space)))
-        ;(track-moves space max-rank min-rank)))
+        (track-moves space max-rank min-rank)))
 
 (defn minimax [board max-mark min-mark]
   (map (fn [x] (best-move-for board x max-mark min-mark)) (get-open-spaces board)))

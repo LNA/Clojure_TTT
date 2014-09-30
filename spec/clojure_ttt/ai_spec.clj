@@ -10,10 +10,10 @@
           in-progress-board [0  "X" 2 "O" "O" "X" "X" "O" "X"]]
       (should= 500
         (rank max-winning-board "X" "O"))
-      (should= -500
-        (rank min-winning-board "X" "O"))
+      (should= 500
+        (rank min-winning-board "O" "X"))
       (should= 0
-        (rank tie-board "X" "O")
+        (rank tie-board "X" "O"))
       (should= 100
         (rank in-progress-board "X" "O")))))
 
@@ -24,4 +24,4 @@
         max-mark "X"
         min-mark "O" ]
     (should= 0
-      (minimax board max-mark min-mark)))))
+      (minimax board max-mark min-mark))))

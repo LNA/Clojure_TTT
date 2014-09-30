@@ -74,3 +74,10 @@
   (cond
     (and (in-bounds-move? board move) (open-move? board move)) true
   :else false))
+
+(defn game-in-progress? [board mark-1 mark-2]
+  (cond
+    (and (not (tie? board mark-1 mark-2)) (not (winner? board mark-1)) (not (winner? board mark-2))) true
+    :else false))
+
+

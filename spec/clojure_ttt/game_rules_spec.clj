@@ -155,3 +155,16 @@
     (let [board ["O" 1 "X" "X" "X" "O" "O" "O" "X"]]
       (should= false 
         (valid-move? board 4)))))
+
+(describe "game-in-progress?"
+  (it "gives true if a game is in progress"
+    (let [board ["O"  1  "X" 
+                 "X" "X" "O" 
+                 "O" "O" "X"]]
+      (should= true 
+        (game-in-progress? board "X" "O")))))
+
+  (it "gives false if a game is over"
+    (let [board ["X" "X" "X" 3 4 5 6 7 8]]
+      (should= false
+        (game-in-progress? board "O" "X"))))
