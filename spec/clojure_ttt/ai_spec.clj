@@ -28,4 +28,12 @@
           max-mark "X"
           min-mark "O" ]
       (should= 0
-        (minimax board max-mark min-mark)))))
+        (minimax board max-mark min-mark))))
+
+   (it "returns the best move on an empth board"
+   (let [board [0 1 2 3 4 5 6 7 8]
+        max-mark "X"
+        min-mark "O" ]
+    (should= 1
+      (minimax board max-mark min-mark))))
+)

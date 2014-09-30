@@ -9,7 +9,6 @@
 (defn get-human-move [board current-mark]
   (u/ask-for-move current-mark)
   (let [move (Integer. (read-line))]
-    (println "Your move is" move ".")
     (if (r/valid-move? board move)
       move
       (do
@@ -19,7 +18,7 @@
 
 (defn get-move [board current-type current-mark next-mark]
   (if (= current-type "a")
-    (a/ai-move board current-mark next-mark)
+    (a/minimax board current-mark next-mark)
     (get-human-move board current-mark))) 
 
 (defn game-loop [current-mark next-mark current-type next-type board]

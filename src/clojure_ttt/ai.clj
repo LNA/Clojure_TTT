@@ -16,22 +16,14 @@
 
 
 (defn track-moves [space max-rank min-rank]
-  (let [score (hash-map space, max-rank)
-        new-score (hash-map space, min-rank)]
-        (cond 
-          (< (first (keys score)) (first (keys new-score))) new-score
-          (> (first (keys score)) (first (keys new-score))) score)))
+  (conj {max-rank space} {min-rank space}))
 
-; "space min" {0 499}
-; "space max" {0 501} nil why are these returning nil?
-; "space min" {2 499}
-; "space max" {2 -499} nil 
 
 (defn best-move-for [board space mark opponent]
   (let [depth 0
         max-rank (rank (b/make-move-on board space mark) mark opponent)
         min-rank (rank (b/make-move-on board space opponent) opponent mark)]
-        (track-moves space max-rank min-rank)))
+        (track-moves space max-rank (* -1 min-rank))))
 
 (defn minimax [board max-mark min-mark]
   (map (fn [x] (best-move-for board x max-mark min-mark)) (get-open-spaces board)))
