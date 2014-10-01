@@ -14,15 +14,27 @@
     (r/tie? board mark opponent) 0
     (r/winner? board mark)       500))
 
+(defn best-move [tracked-moves]
+   (last (last tracked-moves)))
 
 (defn track-moves [space max-rank min-rank depth]
-  (conj {(- max-rank depth) space} {(+ min-rank depth) space}))
-
+  (best-move (sorted-map (- max-rank depth) space, (+ min-rank depth) space)))
 
 (defn best-move-for [board space mark opponent depth]
   (let [max-rank (rank (b/make-move-on board space mark) mark opponent)
         min-rank (rank (b/make-move-on board space opponent) opponent mark)]
-        (track-moves space max-rank (* -1 min-rank) (+ 1 depth))))
+        (track-moves space min-rank (* -1 min-rank) depth)))
 
 (defn minimax [board max-mark min-mark]
-  (map (fn [x] (best-move-for board x max-mark min-mark 0)) (get-open-spaces board)))
+  (loop [board board
+         max-mark max-mark
+         min-mark min-mark
+         depth 0]
+    (if (r/game-over? board max-mark min-mark)
+      (best-move-for board (first (get-open-spaces board)) min-mark max-mark depth)
+      (do 
+        (if (r/game-over? (b/make-move-on board (first (get-open-spaces board)) max-mark) max-mark min-mark)
+          (first (get-open-spaces board))
+          (do 
+          (best-move-for board (first (get-open-spaces board)) min-mark max-mark depth ) ;switches here
+          (recur (b/make-move-on board (first (get-open-spaces board)) max-mark) min-mark max-mark ( inc depth))))))))
