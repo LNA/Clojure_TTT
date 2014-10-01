@@ -28,4 +28,13 @@
           move (minimax board max-mark min-mark)
           best-first-moves [0 2 6 8]]
       (should-contain move
-        best-first-moves))))
+        best-first-moves)))
+
+   (it "blocks an opponent win"
+    (let [board [0  1   2 
+                 3  "O" 5 
+                 "O" 7 "X"]
+          max-mark "X"
+          min-mark "O"]
+          (should= 2
+            (minimax board max-mark min-mark)))))

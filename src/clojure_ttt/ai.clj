@@ -15,6 +15,7 @@
     (r/winner? board mark)       500))
 
 (defn best-move [tracked-moves]
+  (prn tracked-moves)
    (last (last tracked-moves)))
 
 (defn track-moves [space max-rank min-rank depth]
@@ -36,5 +37,5 @@
         (if (r/game-over? (b/make-move-on board (first (get-open-spaces board)) max-mark) max-mark min-mark)
           (first (get-open-spaces board))
           (do 
-          (best-move-for board (first (get-open-spaces board)) min-mark max-mark depth ) ;switches here
+          (best-move-for board (first (get-open-spaces board)) max-mark min-mark depth )
           (recur (b/make-move-on board (first (get-open-spaces board)) max-mark) min-mark max-mark ( inc depth))))))))
