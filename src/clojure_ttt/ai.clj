@@ -15,15 +15,14 @@
     (r/winner? board mark)       500))
 
 
-(defn track-moves [space max-rank min-rank]
-  (conj {max-rank space} {min-rank space}))
+(defn track-moves [space max-rank min-rank depth]
+  (conj {(- max-rank depth) space} {(+ min-rank depth) space}))
 
 
-(defn best-move-for [board space mark opponent]
-  (let [depth 0
-        max-rank (rank (b/make-move-on board space mark) mark opponent)
+(defn best-move-for [board space mark opponent depth]
+  (let [max-rank (rank (b/make-move-on board space mark) mark opponent)
         min-rank (rank (b/make-move-on board space opponent) opponent mark)]
-        (track-moves space max-rank (* -1 min-rank))))
+        (track-moves space max-rank (* -1 min-rank) (+ 1 depth))))
 
 (defn minimax [board max-mark min-mark]
-  (map (fn [x] (best-move-for board x max-mark min-mark)) (get-open-spaces board)))
+  (map (fn [x] (best-move-for board x max-mark min-mark 0)) (get-open-spaces board)))
