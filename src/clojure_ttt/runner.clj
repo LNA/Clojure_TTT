@@ -1,15 +1,14 @@
 (ns clojure_ttt.runner
-  (:require [clojure_ttt.board         :as p]
-    [clojure_ttt.ui            :as u]
-    [clojure_ttt.game_rules    :as r]
-    [clojure_ttt.ai            :as a])
+  (:require [clojure_ttt.board         :as b]
+            [clojure_ttt.ui            :as u]
+            [clojure_ttt.game_rules    :as r]
+            [clojure_ttt.ai            :as a])
   (:gen-class :main true))
 
 
 (defn get-human-move [board current-mark]
   (u/ask-for-move current-mark)
   (let [move (Integer. (read-line))]
-    (println "Your move is" move ".")
     (if (r/valid-move? board move)
       move
       (do
@@ -17,9 +16,9 @@
       (let [move (get-human-move board current-mark)]
         move)))))
 
-(defn get-move [board current-type current-mark]
+(defn get-move [board current-type current-mark next-mark]
   (if (= current-type "a")
-    (a/ai-move board)
+    (a/minimax board current-mark next-mark)
     (get-human-move board current-mark))) 
 
 (defn game-loop [current-mark next-mark current-type next-type board]
@@ -28,11 +27,11 @@
           current-type current-type
           next-type next-type
           board         board]
-    (if (r/game-over? board next-mark)
+    (if (r/game-over? board next-mark current-mark)
       (u/game-over-message next-mark board) 
       (do 
-        (let [move (get-move board current-type current-mark)] 
-             (let [updated-board (p/make-move-on board move current-mark)]
+        (let [move (get-move board current-type current-mark next-mark)] 
+             (let [updated-board (b/make-move-on board move current-mark)]
           (u/print-board updated-board)
           (recur next-mark current-mark next-type current-type updated-board)))))))
 
