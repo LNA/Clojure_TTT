@@ -14,12 +14,16 @@
     (r/tie? board mark opponent) 0
     (r/winner? board mark)       500))
 
+(def all-scores (atom {}))
+
+(defn update-all-scores [key val]
+  (swap! all-scores assoc key val))
+
 (defn best-move [tracked-moves]
-  (prn tracked-moves)
-   (last (last tracked-moves)))
+  (update-all-scores @all-scores tracked-moves))
 
 (defn track-moves [space max-rank min-rank depth]
-  (best-move (sorted-map (- max-rank depth) space, (+ min-rank depth) space)))
+  (update-all-scores {(- max-rank depth) space} {(+ min-rank depth) space}))
 
 (defn best-move-for [board space mark opponent depth]
   (let [max-rank (rank (b/make-move-on board space mark) mark opponent)
@@ -32,10 +36,11 @@
          min-mark min-mark
          depth 0]
     (if (r/game-over? board max-mark min-mark)
-      (best-move-for board (first (get-open-spaces board)) min-mark max-mark depth)
+      (best-move-for board (first (get-open-spaces board)) max-mark min-mark depth)
       (do 
-        (if (r/game-over? (b/make-move-on board (first (get-open-spaces board)) max-mark) max-mark min-mark)
+        (best-move-for board (first (get-open-spaces board)) max-mark min-mark depth)
+        (if (r/game-over? (b/make-move-on board (first (get-open-spaces board)) min-mark) min-mark max-mark)
           (first (get-open-spaces board))
           (do 
-          (best-move-for board (first (get-open-spaces board)) max-mark min-mark depth )
+          (best-move-for board (first (get-open-spaces board)) max-mark min-mark depth)
           (recur (b/make-move-on board (first (get-open-spaces board)) max-mark) min-mark max-mark ( inc depth))))))))
