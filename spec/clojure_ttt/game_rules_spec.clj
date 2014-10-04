@@ -86,12 +86,12 @@
   (it "gives true for a 2 4 6 win"
     (let [board [0 1 "X" 3 "X" 5 "X" 7 8]]
       (should= true
-       (winner? board "X"))))
+       (winner? board "X" "O"))))
 
   (it "gives nil for a non win"
     (let [board (vec (range 9))]
-      (should= nil
-       (winner? board "X")))))
+      (should= false
+       (winner? board "X" "O")))))
 
 (describe "find-open-spaces"
   (it "returns true for an open space"

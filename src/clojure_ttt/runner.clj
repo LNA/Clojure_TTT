@@ -28,7 +28,7 @@
           next-type next-type
           board         board]
     (if (r/game-over? board next-mark current-mark)
-      (u/game-over-message next-mark board) 
+      (u/game-over-message board current-mark next-mark) 
       (do 
         (let [move (get-move board current-type current-mark next-mark)] 
              (let [updated-board (b/make-move-on board move current-mark)]
