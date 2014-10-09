@@ -2,48 +2,57 @@
   (:require
     [clojure.string :refer [replace]]
     [clojure_ttt.board         :as b]
+    [clojure_ttt.ui            :as u]
     [clojure_ttt.game_rules    :as r])
   (:refer-clojure :exclude [replace]))
 
 (defn get-open-spaces [board]
   (keep-indexed #(if (number? %2) %1) board))
 
-(defn rank [board mark opponent]
+(defn rank [board max-mark min-mark]
   (cond
-    (r/game-in-progress? board mark opponent) 100
-    (r/tie? board mark opponent) 0
-    (r/winner? board mark opponent)       500))
+    (r/game-in-progress? board max-mark min-mark) 100 
+    (r/tie? board max-mark min-mark) 0
+    (r/winner? board max-mark min-mark)       500))
 
-(defn best-move-for [board space mark opponent depth]
-  (let [max-rank (rank (b/make-move-on board space mark) mark opponent) ]
-       (sorted-map-by > space (- max-rank depth))))
+(defn get-boards [board max-mark min-mark depth]
+  (map (fn [space] (b/make-move-on board space max-mark)) (get-open-spaces board)))
 
-(defn check-open-spaces [board max-mark min-mark depth]
-  (let [depth (+ 1 depth)]
-   (map (fn [x] (best-move-for board x max-mark min-mark depth)) (get-open-spaces board))))
+(defn scores-before-depth [board max-mark min-mark depth]
+  (map (fn [board] (rank board max-mark min-mark)) (get-boards board max-mark min-mark depth))) 
 
-(defn score-available-moves [board max-mark min-mark]
+(defn apply-depth [depth score]
+  (if (odd? depth)
+    (Math/abs (- depth score))
+    (- score depth))) 
+
+
+(defn get-scores [board max-mark min-mark depth]
+  (map (fn [x] (apply-depth depth x)) (scores-before-depth board max-mark min-mark depth))) ;test me!!!
+
+(defn build-scores [board max-mark min-mark depth]
+  (zipmap (get-open-spaces board) (get-scores board max-mark min-mark depth)))
+
+(defn score-moves [board max-mark min-mark depth]
   (loop [board board
          max-mark max-mark
          min-mark min-mark
-         depth 0]
-        (if (r/game-over? board min-mark max-mark)
-          (prn "find-best-score")
-          (do
-            (check-open-spaces board max-mark min-mark depth)
-            (recur (b/make-move-on board (first (get-open-spaces board)) max-mark) min-mark max-mark ( inc depth))))))
+         depth depth
+         desired-score (- 500 depth)]
+         (prn (u/print-board board))
+         (prn "it gets here" (sort-by val > (build-scores board max-mark min-mark depth)))
+  (if (< 200 (last (first (sort-by val > (build-scores board max-mark min-mark depth))))) ;if there is a 500
+    (first (first (sort-by val > (build-scores board max-mark min-mark depth)))) 
+     (do
+      (if (= (- desired-score 1)  (last (first (sort-by val > (build-scores board min-mark max-mark (inc depth))))))
+        (first (first (sort-by val > (build-scores board min-mark max-mark (inc depth)))))
+        (recur (b/make-move-on board (first (first (build-scores board max-mark min-mark depth))) max-mark) min-mark max-mark (inc depth) desired-score))))))
 
+(defn best-move [board max-mark min-mark depth]
+  (first (first (sort-by val > (score-moves board max-mark min-mark depth)))))
+  
 (defn ai-move [board max-mark min-mark depth]
-  (loop [board board
-         max-mark max-mark
-         min-mark min-mark
-         depth depth]
-         (if (= nil (first (get-open-spaces board)))
-          (prn "find-best-score")
-          (do
-           (check-open-spaces board max-mark min-mark depth)
-            (score-available-moves (b/make-move-on board (first (get-open-spaces board)) min-mark) min-mark max-mark)
-            (recur (assoc board (first (get-open-spaces board)) max-mark ) min-mark max-mark depth)))))
+  (score-moves board max-mark min-mark depth))
 
 (defn minimax [board max-mark min-mark]
   (if (= false (r/game-over? board min-mark max-mark))
