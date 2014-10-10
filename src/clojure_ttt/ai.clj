@@ -26,12 +26,26 @@
     (Math/abs (- depth score))
     (- score depth))) 
 
-
 (defn get-scores [board max-mark min-mark depth]
   (map (fn [x] (apply-depth depth x)) (scores-before-depth board max-mark min-mark depth))) ;test me!!!
 
 (defn build-scores [board max-mark min-mark depth]
   (zipmap (get-open-spaces board) (get-scores board max-mark min-mark depth)))
+
+(defn best-min-score [board min-mark max-mark depth]
+  (first (first (sort-by val > (build-scores board min-mark max-mark (inc depth))))))
+
+(defn best-max-score [board max-mark min-mark depth]
+  (first (first (sort-by val > (build-scores board max-mark min-mark depth)))))
+
+(defn max-scored-move [board max-mark min-mark depth]
+  (last (first (sort-by val > (build-scores board max-mark min-mark depth)))))
+
+(defn min-scored-move [board min-mark max-mark depth]
+  (last (first (sort-by val > (build-scores board min-mark max-mark (inc depth))))))
+
+(defn remaining-scores [board max-mark min-mark depth]
+  (first (first (build-scores board max-mark min-mark depth))))
 
 (defn score-moves [board max-mark min-mark depth]
   (loop [board board
@@ -39,14 +53,12 @@
          min-mark min-mark
          depth depth
          desired-score (- 500 depth)]
-         (prn (u/print-board board))
-         (prn "it gets here" (sort-by val > (build-scores board max-mark min-mark depth)))
-  (if (< 200 (last (first (sort-by val > (build-scores board max-mark min-mark depth))))) ;if there is a 500
-    (first (first (sort-by val > (build-scores board max-mark min-mark depth)))) 
+  (if (< 200 (max-scored-move board max-mark min-mark depth))
+    (best-max-score board max-mark min-mark depth)
      (do
-      (if (= (- desired-score 1)  (last (first (sort-by val > (build-scores board min-mark max-mark (inc depth))))))
-        (first (first (sort-by val > (build-scores board min-mark max-mark (inc depth)))))
-        (recur (b/make-move-on board (first (first (build-scores board max-mark min-mark depth))) max-mark) min-mark max-mark (inc depth) desired-score))))))
+      (if (= (- desired-score 1)  (min-scored-move board min-mark max-mark depth))
+        (best-min-score board min-mark max-mark depth)
+        (recur (b/make-move-on board (remaining-scores board max-mark min-mark depth) max-mark) min-mark max-mark (inc depth) desired-score))))))
 
 (defn best-move [board max-mark min-mark depth]
   (first (first (sort-by val > (score-moves board max-mark min-mark depth)))))

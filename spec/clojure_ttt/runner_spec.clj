@@ -21,12 +21,11 @@
         (should= 1
           (get-move board current-type current-mark next-mark)))))
 
-  (xit "hits the game over message in the game loop"
+  (it "hits the game over message in the game loop"
     (let [board         (vec (range 9))
           game-over-message "game over message"]
           (with-in-str (mock-human-input [0 3 6])
         (with-redefs [println (constantly "game over message")
                       prn     (constantly true)]
           (should= game-over-message
-            (game-loop "X" "O" "h" "a" board)))))))
-  
+            (game-loop "X" "O" "a" "a" board)))))))
