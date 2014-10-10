@@ -35,9 +35,9 @@
       (let [max-board ["h" 1 2 "h" 4 5 6 "a" 8]
             min-board ["h" 1 2 3 4 5 "a" "a" 8]]
         (should= 6
-         (minimax max-board "h" "a"))
+         (ai-move max-board "h" "a"))
         (should= 8
-         (minimax min-board "h" "a"))))
+         (ai-move min-board "h" "a"))))
 
    (it "blocks a knight set up"
       (let [board ["O"  1   2
@@ -45,7 +45,7 @@
                     6  "O"  8]
             max-mark "X"
             min-mark "O"
-             move (minimax board max-mark min-mark)]
+             move (ai-move board max-mark min-mark)]
             (should-contain move
               [3 5 6 8])))
 
@@ -55,7 +55,7 @@
                    6   "O"   8]
             max-mark "X"
             min-mark "O"
-             move (minimax board max-mark min-mark)]
+             move (ai-move board max-mark min-mark)]
             (should-contain move
               [0 2 6 8])))
 
@@ -65,7 +65,7 @@
                    6    7  8]
             max-mark "X"
             min-mark "O"
-             move (minimax board max-mark min-mark)]
+             move (ai-move board max-mark min-mark)]
             (should-contain move
               [0 2 6 8])))
 
@@ -75,6 +75,6 @@
                    6    7    8]
             max-mark "X"
             min-mark "O"
-             move (minimax board max-mark min-mark)]
+             move (ai-move board max-mark min-mark)]
             (should-contain move
               [0 2 6 8]))))

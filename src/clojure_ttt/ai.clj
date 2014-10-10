@@ -47,7 +47,7 @@
 (defn remaining-scores [board max-mark min-mark depth]
   (first (first (build-scores board max-mark min-mark depth))))
 
-(defn score-moves [board max-mark min-mark depth]
+(defn minimax [board max-mark min-mark depth]
   (loop [board board
          max-mark max-mark
          min-mark min-mark
@@ -59,13 +59,10 @@
       (if (= (- desired-score 1)  (min-scored-move board min-mark max-mark depth))
         (best-min-score board min-mark max-mark depth)
         (recur (b/make-move-on board (remaining-scores board max-mark min-mark depth) max-mark) min-mark max-mark (inc depth) desired-score))))))
-
-(defn best-move [board max-mark min-mark depth]
-  (first (first (sort-by val > (score-moves board max-mark min-mark depth)))))
   
-(defn ai-move [board max-mark min-mark depth]
-  (score-moves board max-mark min-mark depth))
+(defn get-move [board max-mark min-mark depth]
+  (minimax board max-mark min-mark depth))
 
-(defn minimax [board max-mark min-mark]
+(defn ai-move [board max-mark min-mark]
   (if (= false (r/game-over? board min-mark max-mark))
-   (ai-move board max-mark min-mark 0)))
+   (get-move board max-mark min-mark 0)))
