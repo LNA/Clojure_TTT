@@ -34,7 +34,7 @@
 (defn invalid-move-message []
   (println "Invalid move.  Try again!"))
 
-(defn game-over-message [mark board]
-  (if (= true (r/winner? board mark)) 
-    (println "Game over... " mark "has won!") 
+(defn game-over-message [board mark-1 mark-2]
+  (if (= true (r/winner? board mark-1 mark-2)) 
+    (println "Game over!") 
     (println "Its a tie!")))
