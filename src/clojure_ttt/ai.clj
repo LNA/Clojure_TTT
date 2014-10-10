@@ -6,46 +6,46 @@
     [clojure_ttt.game_rules    :as r])
   (:refer-clojure :exclude [replace]))
 
-(defn get-open-spaces [board]
+(defn- get-open-spaces [board]
   (keep-indexed #(if (number? %2) %1) board))
 
-(defn rank [board max-mark min-mark]
+(defn- rank [board max-mark min-mark]
   (cond
     (r/game-in-progress? board max-mark min-mark) 100 
     (r/tie? board max-mark min-mark) 0
     (r/winner? board max-mark min-mark)       500))
 
-(defn get-boards [board max-mark min-mark depth]
+(defn- get-boards [board max-mark min-mark depth]
   (map (fn [space] (b/make-move-on board space max-mark)) (get-open-spaces board)))
 
-(defn scores-before-depth [board max-mark min-mark depth]
+(defn- scores-before-depth [board max-mark min-mark depth]
   (map (fn [board] (rank board max-mark min-mark)) (get-boards board max-mark min-mark depth))) 
 
-(defn apply-depth [depth score]
+(defn- apply-depth [depth score]
   (if (odd? depth)
     (Math/abs (- depth score))
     (- score depth))) 
 
-(defn get-scores [board max-mark min-mark depth]
-  (map (fn [x] (apply-depth depth x)) (scores-before-depth board max-mark min-mark depth))) ;test me!!!
+(defn- get-scores [board max-mark min-mark depth]
+  (map (fn [x] (apply-depth depth x)) (scores-before-depth board max-mark min-mark depth)))
 
-(defn build-scores [board max-mark min-mark depth]
+(defn- build-scores [board max-mark min-mark depth]
   (zipmap (get-open-spaces board) (get-scores board max-mark min-mark depth)))
 
-(defn best-min-score [board min-mark max-mark depth]
+(defn- remaining-scores [board max-mark min-mark depth]
+  (first (first (build-scores board max-mark min-mark depth))))
+
+(defn- best-min-score [board min-mark max-mark depth]
   (first (first (sort-by val > (build-scores board min-mark max-mark (inc depth))))))
-
-(defn best-max-score [board max-mark min-mark depth]
-  (first (first (sort-by val > (build-scores board max-mark min-mark depth)))))
-
-(defn max-scored-move [board max-mark min-mark depth]
-  (last (first (sort-by val > (build-scores board max-mark min-mark depth)))))
 
 (defn min-scored-move [board min-mark max-mark depth]
   (last (first (sort-by val > (build-scores board min-mark max-mark (inc depth))))))
 
-(defn remaining-scores [board max-mark min-mark depth]
-  (first (first (build-scores board max-mark min-mark depth))))
+(defn- best-max-score [board max-mark min-mark depth]
+  (first (first (sort-by val > (build-scores board max-mark min-mark depth)))))
+
+(defn- max-scored-move [board max-mark min-mark depth]
+  (last (first (sort-by val > (build-scores board max-mark min-mark depth)))))
 
 (defn minimax [board max-mark min-mark depth]
   (loop [board board
