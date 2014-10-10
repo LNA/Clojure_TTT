@@ -46,8 +46,10 @@
 (defn diag-win? [board mark]
   (some  #(% board mark) [left-diag-win? right-diag-win?]))
 
-(defn winner? [board mark]
-  (some  #(% board mark) [row-win? column-win? diag-win?]))
+(defn winner? [board mark-1 mark-2]
+  (cond 
+    (or (some  #(% board mark-1) [row-win? column-win? diag-win?]) (some  #(% board mark-2) [row-win? column-win? diag-win?])) true
+  :else false))
 
 (defn find-open-spaces [board]
   (map (fn [x] (number? x)) board))
@@ -56,12 +58,12 @@
   (let [checked-spaces (find-open-spaces board)
         board           board]
     (cond
-      (and (every? false? checked-spaces) (not (winner? board mark-1)) (not (winner? board mark-2))) true
+      (and (every? false? checked-spaces) (not (winner? board mark-1 mark-2)) (not (winner? board mark-1 mark-2))) true
       :else false))) 
 
 (defn game-over? [board mark-1 mark-2]
   (cond 
-    (or (= true (winner? board mark-1)) (= true (tie? board mark-1 mark-2))) true
+    (or (= true (winner? board mark-1 mark-2)) (= true (tie? board mark-1 mark-2))) true
     :else false))
 
 (defn in-bounds-move? [board move]
@@ -77,5 +79,5 @@
 
 (defn game-in-progress? [board mark-1 mark-2]
   (cond
-    (and (not (tie? board mark-1 mark-2)) (not (winner? board mark-1)) (not (winner? board mark-2))) true
+    (and (not (tie? board mark-1 mark-2)) (not (winner? board mark-1 mark-2)) (not (winner? board mark-1 mark-2))) true
     :else false))
