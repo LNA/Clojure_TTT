@@ -7,7 +7,7 @@
     [clojure_ttt.ai            :as a]))
 
 (describe "Runer" 
-  (it "gets a move"
+  (xit "gets a move"
     (let [board (vec (range 9))
           current-type  "h"
           next-type     "a"
@@ -17,7 +17,7 @@
         (should= 1
           (get-move board current-type current-mark next-mark)))))
 
-  (it "hits the game over message in the game loop"
+  (xit "hits the game over message in the game loop"
     (let [board         (vec (range 9))
           game-over-message "game over message"]
         (with-redefs [println (constantly "game over message")
